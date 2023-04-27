@@ -1,0 +1,64 @@
+from collections import Counter
+def win(arr,sc1,sc2,t1,t2,d,over1,over2):
+    run1,wicket1,run2,wicket2,nrr,nrr1,nrr2=0,0,0,0,0,0,0
+    over1=float(over1)
+    over2=float(over2)
+    run1,wicket1=sc1.split('/')
+    run2,wicket2=sc2.split('/')
+    run1=int(run1)
+    run2=int(run2)
+    idx1=arr.index(t1)
+    idx2=arr.index(t2)
+    d[idx1]['match']+=1
+    d[idx2]['match']+=1
+    nrr1=run1/over1
+    nrr2=run2/over2
+    nrr=float("%.3f"%abs(nrr1-nrr2))
+    
+    if run1>run2:
+        print("Team {} won the match".format(t1))
+        d[idx1]['POINT']+=2
+        d[idx1]['WIN']+=1
+        d[idx1]['NRR']+=nrr
+        d[idx2]['NRR']-=nrr
+        d[idx2]['LOSE']+=1
+    elif run1==run2:
+        print("Match result is draw..")
+        d[idx1]['POINT']+=1
+        d[idx2]['POINT']+=1
+        
+    else:
+        print("Team {} won the match".format(t2))
+        d[idx2]['POINT']+=2
+        d[idx2]['WIN']+=1
+        d[idx2]['NRR']+=nrr
+        d[idx1]['NRR']-=nrr
+        d[idx1]['LOSE']+=1
+
+    return d
+        
+t=int(input("Enter Team No: "))
+arr=[]
+for i in range(t):
+    arr.append(input("Enter team {} name: ".format(i)))
+d=list()
+for i in range(t):
+    ele=dict({'TEAM_NAME':arr[i],'MATCH':0,'WIN':0,'LOSE':0,'POINT':0,'NRR':0})
+    d.append(ele)
+sc=[]
+for i in range(2):
+    t1,t2=input("Enter the Match {} Team with space: ".format(i)).split()
+    sc1,over1=input("{} score and overs with space: ".format(t1)).split()
+    sc2,over2=input("{} score and overs with space: ".format(t2)).split()
+    sc.append(sc1)
+    sc.append(sc2)
+    res=win(arr,sc1,sc2,t1,t2,d,over1,over2)
+point_list=[]
+for i in range(t):
+    point_list.append(d[i]['point'])
+point_list.sort(reverse=True)
+#print(point_list)
+for i in range(t):
+    print("{}".format(d[i]))
+
+
